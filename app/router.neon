@@ -1,0 +1,15 @@
+# Defaults
+defaults:
+    lang=en
+    controller='Web/Home'
+    view='Home'
+
+# Homepage
+home:
+    path=''
+
+# API Dashboard
+dashboard:
+    path='/api'
+    controller='Web/ApiDashboard'
+#    view='ApiDashboard'

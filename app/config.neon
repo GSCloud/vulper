@@ -1,0 +1,39 @@
+### Debugger - basic
+# https://tracy.nette.org/en/configuring
+
+debug=true
+debug_mode=dev	# dev / prod / detect (any other value)
+
+#debug_cookie=''
+#debug_email=''
+#debug_logs='/tmp/logs' # mapped to local /tmp
+
+### Debugger - advanced
+### https://github.com/nette/tracy/blob/master/src/Tracy/Debugger/Debugger.php
+tracy:
+	dumpTheme=dark
+	logSeverity=15
+	maxDepth=15
+	maxLength=150
+	maxItems=100
+	reservedMemorySize=500000
+	scream=true
+	showBar=true
+	showFireLogger=false
+	showLocation=true
+	strictMode=true
+
+### PHP ini
+#auto_detect_line_endings=true
+#default_socket_timeout=30
+#display_errors=true
+
+### Redis
+redis: [
+]
+
+### Locale
+site:
+	title='Vulper'
+	keywords='some,keywords'
+	description='Description.'

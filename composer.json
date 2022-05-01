@@ -1,0 +1,30 @@
+{
+    "name": "gscloud/vulper",
+    "description": "Base PHP 8.1 docker container app.",
+    "require": {
+        "adbario/php-dot-notation": "^3",
+        "altorouter/altorouter": "^1",
+        "cakephp/cache": "^4.3",
+        "cheprasov/php-redis-client": "^1",
+        "league/climate": "^3",
+        "mustache/mustache": "^2",
+        "nette/neon": "^3",
+        "nette/tester": "^2",
+        "paragonie/easydb": "^2",
+        "paragonie/halite": "^4",
+        "tracy/tracy": "^2"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "config": {
+        "platform": {
+            "php": "8.1"
+        }
+    },
+    "require-dev": {
+        "codeception/codeception": "^4.1"
+    }
+}

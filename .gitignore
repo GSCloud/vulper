@@ -1,0 +1,13 @@
+*.bak
+*.tar
+*.tgz
+*.zip
+*~
+.DS_Store
+.Trash-1000
+.php-cs-fixer.cache
+Thumbs.db
+cache/**
+db/**
+vendor/**
+**/output/**
