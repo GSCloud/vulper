@@ -12,7 +12,6 @@ Deploy basic containers **app**, **db**, **cache** *(Redis)* and **phpmyadmin** 
  - `sudo apt install ruby-full` - Ruby is used for YAML 2 JSON conversions
 
 ## Makefile
-
 Run `make` for help. [https://www.gnu.org/software/make/manual/make.html]
 
 ## Application Logic
@@ -36,10 +35,13 @@ Run `make` for help. [https://www.gnu.org/software/make/manual/make.html]
  - load config and router definitions
  - setup debugger
  - execute the Web or Cli controller
+ - configuration and command line arguments are passed as variables to constructor
 
-💡 Debugger can be extensively configured via **config.neon**.
+💡 Debugger can be extensively configured via **[config.neon](app/config.neon)**.
 
 ### Web Controller
+`(new App\Web($cfg))->run();`
+
 **Web.php** performs these tasks:
  - read routing table configuration
  - find the corresponding controller
@@ -47,6 +49,8 @@ Run `make` for help. [https://www.gnu.org/software/make/manual/make.html]
  - add extra headers
 
 ### Cli Controller
+`(new App\Cli($cfg, $argv ?? []))->run();`
+
 **Cli.php** performs these tasks:
  - check command line parameters
  - find the corresponding controller
@@ -68,7 +72,6 @@ Configuration is stored as **.env** file. Demo configurations are available as *
 💡 There is also an **env.mustache** template available for programmatic environment creation.
 
 ## Constants
-
  - **DS** - directory separator shortcut
  - **CLI** - true if CLI SAPI is detected
  - **LOCALHOST** - true if localhost is detected
@@ -77,7 +80,6 @@ Configuration is stored as **.env** file. Demo configurations are available as *
  - **WWW** - full path to www/ folder
 
 ## Configuration Commands
-
  - `make cfg` - show docker-compose configuration
  - `make jsoncfg` - show docker-compose configuration as JSON
  - `make jsonapp` - show environment as JSON
@@ -112,7 +114,6 @@ Always use `install` to create containers if they got removed.
 ❗ phpMyAdmin (PMA) container can be disabled via **.env** by setting **PMA_DISABLE=1**
 
 ## Cleaning and Removal
-
  - `make remove` - remove containers
  - `make purge` - remove containers + database folder
 
@@ -121,13 +122,14 @@ Always use `install` to create containers if they got removed.
 Tracy logs and exceptions are mapped outside the container and available at: **/tmp/${APP_NAME}/logs**
 
 ## To Do
-
- - Dockerfile
-   - build
-   - push
- - database access
- - database operations
-   - export
-   - import
- - tests
+ - Redis
+   - access demo
+ - Database
+   - access demo
+   - `make import`
+   - `make export`
+ - Tests
    - codeception
+ - Dockerfile
+   - `make build`
+   - `make push`

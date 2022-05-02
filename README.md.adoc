@@ -42,16 +42,23 @@ Run `make` for help.
 *Bootstrap.php* performs these tasks: - set constants - import Composer
 autoloader (run `make install` or `make update`) - load config and
 router definitions - setup debugger - execute the Web or Cli controller
+- configuration and command line arguments are passed as variables to
+constructor
 
-💡 Debugger can be extensively configured via *config.neon*.
+💡 Debugger can be extensively configured via
+*link:app/config.neon[config.neon]*.
 
 ==== Web Controller
+
+`(new App\Web($cfg))->run();`
 
 *Web.php* performs these tasks: - read routing table configuration -
 find the corresponding controller - continue the workflow - add extra
 headers
 
 ==== Cli Controller
+
+`(new App\Cli($cfg, $argv ?? []))->run();`
 
 *Cli.php* performs these tasks: - check command line parameters - find
 the corresponding controller - continue the workflow / display a help
@@ -144,12 +151,14 @@ at: */tmp/$\{APP_NAME}/logs*
 
 === To Do
 
-* Dockerfile
-** build
-** push
-* database access
-* database operations
-** export
-** import
-* tests
+* Redis
+** access demo
+* Database
+** access demo
+** `make import`
+** `make export`
+* Tests
 ** codeception
+* Dockerfile
+** `make build`
+** `make push`
