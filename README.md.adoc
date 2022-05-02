@@ -64,6 +64,9 @@ headers
 the corresponding controller - continue the workflow / display a help
 message to TTY
 
+#### CLI Demo - `./cli.sh` - display information about all controllers
+in app/Cli - `./cli.sh demo` - run DemoController in app/Cli
+
 === Configuration
 
 Configuration is stored as *.env* file. Demo configurations are

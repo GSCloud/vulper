@@ -56,6 +56,11 @@ Run `make` for help. [https://www.gnu.org/software/make/manual/make.html]
  - find the corresponding controller
  - continue the workflow / display a help message to TTY
 
+ #### CLI Demo
+  - `./cli.sh` - display information about all controllers in app/Cli
+  - `./cli.sh demo` - run DemoController in app/Cli
+
+
 ## Configuration
 Configuration is stored as **.env** file. Demo configurations are available as **env...-redist** files.  
 💡 Copy a configuration file over the **.env** and run `make`.
