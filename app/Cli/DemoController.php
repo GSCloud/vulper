@@ -21,15 +21,15 @@ class DemoController
      */
     public function getInfoText(): string
     {
-        bdump($this->cfg); // do something meaningful with the configuration
         return 'this is just a simple demo';
     }
-
+    
     /**
      * @return self
      */
     public function run(): object
     {
+        dump($this->cfg['site'] ?? []); // do something meaningful
         $climate = new CLImate();
         $climate->out("Hello command line!");
         return $this;
