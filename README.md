@@ -2,82 +2,114 @@
 [https://github.com/GSCloud/vulper]
 
 Base PHP 8.1 docker container app.  
-Deploys containers: **app**, **db**, **cache** and **phpmyadmin** *(optional)*.
+Deploys basic containers **app**, **db**, **cache** *(Redis)* and **phpmyadmin** *(optional)*.
+
+💡 Images, extensions, external binaries, ports and volumes are freely configurable.
+
+## Prerequisites
+ - Docker environment [https://docs.docker.com/get-docker/]
+ - `sudo apt install make` - utility to process Makefile
+ - `sudo apt install ruby-full` - Rusy is used for YAML 2 JSON conversions only
 
 ## Makefile
 
-Run `make` for detailed help.
+Run `make` for help. [https://www.gnu.org/software/make/manual/make.html]
 
-## Prerequisites
+## Application Logic
 
- - Docker environment [https://docs.docker.com/get-docker/]
- - `sudo apt install make` - Makefile processor
- - `sudo apt install ruby-full` - for YAML 2 JSON conversions only
+### Web
+ - www/**index.php** (Apache root directory is **www/** by default)
+ - app/**Bootstrap.php**
+ - app/**Web.php**
+ - custom controllers (MVC pattern)
 
-## Logic
+### CLI or CRON
+ - **cli.sh** (shortcut for loading Bootstrap)
+ - app/**Bootstrap.php**
+ - app/**Cli.php**
+ - custom controllers (MVC pattern)
 
-1) WEB: www/**index.php** > app/**Bootstrap.php** > app/**Web.php**
-2) CLI: ./**cli.sh** > app/**Bootstrap.php** > app/**Cli.php**
+### Bootstrap
+**Bootstrap.php** performs these tasks:
+ - set constants
+ - import Composer autoloader (run `make install` or `make update`)
+ - load config and router definitions
+ - setup debugger
+ - execute the Web or Cli controller
 
-Bootstrap role is to set all the constants, import Composer autoloader, load config and router definitions, setup debugger and execute the Web or Cli app. Debugger can be extensively modified using **config.neon**.
+💡 Debugger can be extensively configured via **config.neon**.
+
+### Web Controller
+**Web.php** performs these tasks:
+ - read routing table configuration
+ - find the corresponding controller
+ - continue the workflow
+ - add extra headers
+
+### Cli Controller
+**Cli.php** performs these tasks:
+ - check command line parameters
+ - find the corresponding controller
+ - continue the workflow / display a help message to TTY
 
 ## Configuration
+Configuration is stored as **.env** file. Demo configurations are available as **env...-redist** files.  
+💡 Copy a configuration file over the **.env** and run `make`.
 
- - **.env** - environment
- - **app/config.neon** - main app config
+ - **.env** - environment configuration
+ - **app/env.json** - generated file = .env translated to JSON format (❗ run `make savejson` after the configuration changes)
+ - **app/config.neon** - main app config [https://doc.nette.org/en/neon]
  - **app/router.neon** - main app router
- - **www/.htaccess** - Apache 2 htaccess
- - **INI/** - ini files to alter resource limits, post and upload limits, default timezone
- - **CLI_REQ** - environment variable to use if CLI SAPI is detected, set it to pass a PHP require file that can load extra data, alter settings or override default constants
+ - **www/.htaccess** - Apache 2 htaccess [https://httpd.apache.org/docs/2.4/howto/htaccess.html]
+ - **INI/** - *Docker injected configuration files* to alter resource limits, post and upload limits, default timezone [https://www.php.net/manual/en/configuration.file.php]
+ - **CLI_REQ** - environment variable to use if CLI SAPI is detected = set it to specify a PHP required file that can load extra data, alter settings or override defaults
 
-Configuration is stored in the **.env** file. Demo configurations are available as **env...-redist** files. Copy a configuration file over the **.env** and run `make`.
-
-Make sure to remove containers before changing ports in the **.env**.  
-There is also an **env.mustache** template available for programmatic environment creation.
+❗ Make sure to remove containers before changing ports in the **.env**.  
+💡 There is also an **env.mustache** template available for programmatic environment creation.
 
 ## Constants
 
- - **APP** - points to the app/ folder
- - **CLI** - set tu true if CLI SAPI is detected
  - **DS** - directory separator shortcut
- - **LOCALHOST** - set tu true if localhost is detected
- - **ROOT** - full path to the Vulper folder
- - **WWW** - full path to the www/ folder
+ - **CLI** - true if CLI SAPI is detected
+ - **LOCALHOST** - true if localhost is detected
+ - **ROOT** - full path to the Vulper root
+ - **APP** - full path to app/ folder
+ - **WWW** - full path to www/ folder
 
 ## Configuration Commands
 
  - `make cfg` - show docker-compose configuration
  - `make jsoncfg` - show docker-compose configuration as JSON
  - `make jsonapp` - show environment as JSON
-
-There are some extra INI files in the INI/ folder, mapped to the containers.
+ - `make savejson` - save application config to app/env.json as JSON
 
 ## Router
 
-Web routes are stored in **router.neon***. The *defaults* are applied to all the routes. Every route must set the *path*, *controller* and corresponding *view*, if not using the default values.
+Web routes are stored in **router.neon**.  
+Array *defaults* is applied to all the routes, every route must set at least: *path*, *controller* and *view*, if not using the default values.
 
 ## Installation
-
   - `make install` - create docker images
-  - `make install extensions` - create docker images, add PHP extensions
+  - `make install extensions` - create docker images, add PHP extensions afterwards
   - `make check` - check running containers
 
-## Development
+## Updates
+ - `make update` - update installation
 
+## Development
  - `make exec` - run Bash in the app container
- - `make applog` - show app logs of the app container
- - `make csfixer` - run PHP CS-FIXER in app/ folder
- - `make phpstan` - run PHPStan static analysis in app/ folder
- - `make test` - run Nette tester tests in app/ folder
+ - `make applog` - show app container logs
+ - `make csfixer` - run PHP CS-FIXER in app/
+ - `make phpstan` - run PHPStan static analysis in app/
+ - `make test` - run Nette tester tests in app/
 
 ## Container Operations
-
- - `make start` - resume stopped containers
  - `make stop` - stop containers
+ - `make start` - resume stopped containers
 
 Always use `install` to create containers if they got removed.
 
-❗ PMA container can be disabled in the environment by setting **PMA_DISABLE=1**
+❗ phpMyAdmin (PMA) container can be disabled via **.env** by setting **PMA_DISABLE=1**
 
 ## Cleaning and Removal
 
