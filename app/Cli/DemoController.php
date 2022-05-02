@@ -12,7 +12,6 @@ class DemoController
     public function __construct(
         private array $cfg
     ) {
-        bdump($this->cfg); // do something meaningful with the configuration
     }
 
     /**
@@ -22,6 +21,7 @@ class DemoController
      */
     public function getInfoText(): string
     {
+        bdump($this->cfg); // do something meaningful with the configuration
         return 'this is just a simple demo';
     }
 
