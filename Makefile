@@ -1,7 +1,7 @@
 #@author Fred Brooker <git@gscloud.cz>
 include .env
 app_dock != docker ps | grep ${APP_NAME}
-
+composer != command -v composer 2> /dev/null
 all: info
 
 info:
@@ -14,8 +14,9 @@ endif
 	@echo ""
 	@echo "\e[92mConfiguration / Documentation\e[0m"
 	@echo "🆘 \e[0;1mmake cfg\e[0m \t\t- show Docker config"
-	@echo "🆘 \e[0;1mmake jsoncfg\e[0m \t- show Docker config as JSON"
-	@echo "🆘 \e[0;1mmake jsonapp\e[0m \t- show application config as JSON"
+	@echo "🆘 \e[0;1mmake jsoncfg\e[0m \t- show Docker config (JSON)"
+	@echo "🆘 \e[0;1mmake jsonapp\e[0m \t- show application config (JSON)"
+	@echo "🆘 \e[0;1mmake savejson\e[0m \t- save application config to app/env.json (JSON)"
 	@echo "🆘 \e[0;1mmake docs\e[0m \t\t- build documentation"
 	@echo ""
 	@echo "\e[92mContainers\e[0m"
@@ -44,6 +45,13 @@ ifneq ($(strip $(app_dock)),)
 	@docker restart ${APP_NAME}
 else
 	@echo "Container is not running."
+endif
+
+update:
+ifneq ($(strip $(composer)),)
+	@composer update
+else
+	@echo "Composer is not installed."
 endif
 
 docs:
@@ -79,6 +87,9 @@ jsoncfg:
 
 jsonapp:
 	@bash ./bin/exportconfig.sh
+
+savejson:
+	bash ./bin/exportconfig.sh > ./app/env.json
 
 check:
 	@echo "🔨 \e[1;32m Checking configuration\e[0m"
