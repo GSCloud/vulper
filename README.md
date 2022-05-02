@@ -9,7 +9,7 @@ Deploy basic containers **app**, **db**, **cache** *(Redis)* and **phpmyadmin** 
 ## Prerequisites
  - Docker environment [https://docs.docker.com/get-docker/]
  - `sudo apt install make` - utility to process Makefile
- - `sudo apt install ruby-full` - Rusy is used for YAML 2 JSON conversions only
+ - `sudo apt install ruby-full` - Ruby is used for YAML 2 JSON conversions
 
 ## Makefile
 
