@@ -25,6 +25,11 @@ mkdir -p "${DB_VOLUME}" "${REDIS_VOLUME:=''}"
 APP_LOGS="/tmp/${APP_NAME}/logs" # path to Tracy logs
 mkdir -p "$APP_LOGS"
 
+# composer install
+if [ ! -d "vendor" ]; then
+    composer install
+fi
+
 info "Installing containers"
 if [ ${PMA_DISABLE:=0} == 1 ]; then
     docker-compose up -d app

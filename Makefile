@@ -1,7 +1,7 @@
 #@author Fred Brooker <git@gscloud.cz>
 include .env
-app_dock != docker ps | grep ${APP_NAME}
-composer != command -v composer 2> /dev/null
+is_app_dock != docker ps | grep ${APP_NAME} # check if app container is running
+is_composer != command -v composer 2> /dev/null # check if composer is installed
 all: info
 
 info:
@@ -40,15 +40,15 @@ applog:
 	@docker logs -f --details ${APP_NAME}
 
 refresh:
-ifneq ($(strip $(app_dock)),)
-	@echo "Application container details: \e[0;1m${app_dock}\e[0m"
+ifneq ($(strip $(is_app_dock)),)
+	@echo "Application container details: \e[0;1m${is_app_dock}\e[0m"
 	@docker restart ${APP_NAME}
 else
 	@echo "Container is not running."
 endif
 
 update:
-ifneq ($(strip $(composer)),)
+ifneq ($(strip $(is_composer)),)
 	@composer update
 else
 	@echo "Composer is not installed."
@@ -59,8 +59,12 @@ docs:
 	@bash ./bin/create_pdf.sh
 
 install:
+ifneq ($(strip $(is_composer)),)
 	@echo "🔨 \e[1;32m Installing containers\e[0m"
 	@bash ./bin/install.sh
+else
+	@echo "Composer is not installed."
+endif
 
 extensions:
 	@echo "🔨 \e[1;32m Installing PHP extensions\e[0m"
@@ -96,7 +100,7 @@ check:
 	@bash ./bin/check.sh
 
 exec:
-ifneq ($(strip $(app_dock)),)
+ifneq ($(strip $(is_app_dock)),)
 	@bash ./bin/execbash.sh
 else
 	@echo "Container is not running."
@@ -115,5 +119,5 @@ phpstan:
 test:
 	./vendor/bin/tester .
 
-# basic worflow: install containers, add PHP extensions (will reuse database data), runtime check
+# basic worflow
 everything: install extensions check
