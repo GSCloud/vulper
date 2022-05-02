@@ -3,11 +3,11 @@
 {empty}[https://github.com/GSCloud/vulper]
 
 Base PHP 8.1 docker container app. +
-Deploys basic containers *app*, *db*, *cache* _(Redis)_ and *phpmyadmin*
+Deploy basic containers *app*, *db*, *cache* _(Redis)_ and *phpmyadmin*
 _(optional)_.
 
-💡 Images, extensions, external binaries, ports and volumes are freely
-configurable.
+💡 Docker images, extensions, external binaries, ports and volumes are
+freely configurable.
 
 === Prerequisites
 
