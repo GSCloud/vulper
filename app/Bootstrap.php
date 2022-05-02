@@ -58,14 +58,14 @@ if (file_exists($autoload_file) && is_readable($autoload_file)) {
 $cfg = null;
 $config_file = APP . DS. 'config.neon';
 if (file_exists($config_file) && is_readable($config_file)) {
-    $cfg = Neon::decode((string) (file_get_contents($config_file)));
+    $cfg = Neon::decode((string) file_get_contents($config_file));
 }
 
 // import ROUTING table
 $router = null;
 $router_file = APP . DS . 'router.neon';
 if (file_exists($router_file) && is_readable($router_file)) {
-    $router = Neon::decode((string) (file_get_contents($router_file)));
+    $router = Neon::decode((string) file_get_contents($router_file));
 }
 
 if (!is_array($cfg)) {
@@ -73,6 +73,13 @@ if (!is_array($cfg)) {
 }
 $cfg['router'] = array_merge_recursive((array) $router);
 
+// import APP JSON CONFIGURATION
+$json = null;
+$json_file = APP . DS. 'env.json';
+if (file_exists($json_file) && is_readable($json_file)) {
+    $json = json_decode((string) file_get_contents($json_file), true);
+}
+$cfg['appcfg'] = $json;
 
 
 // ***** TRACY DEBUGGER

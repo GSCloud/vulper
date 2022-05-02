@@ -28,10 +28,6 @@ tracy:
 #default_socket_timeout=30
 #display_errors=true
 
-### Redis
-redis: [
-]
-
 ### Locale
 site:
 	title='Vulper'

@@ -21,12 +21,13 @@ class Cli
     /**
      * Run the app.
      *
-     * @return void
+     * @return self
      */
-    public function run()
+    public function run(): self
     {
         $this->processRouting();
         $this->finish();
+        return $this;
     }
 
     /**
