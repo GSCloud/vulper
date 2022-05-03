@@ -23,7 +23,7 @@ class DemoController
     {
         return 'this is just a simple demo';
     }
-    
+
     /**
      * @return self
      */

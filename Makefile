@@ -30,10 +30,10 @@ endif
 	@echo ""
 	@echo "\e[92mDeveloper Tools\e[0m"
 	@echo "🆘 \e[0;1mmake applog\e[0m \t\t- show app container logs"
-	@echo "🆘 \e[0;1mmake csfixer\e[0m \t- run CS-FIXER on app/"
+	@echo "🆘 \e[0;1mmake csf\e[0m \t\t- run CS-FIXER on app/"
 	@echo "🆘 \e[0;1mmake exec\e[0m \t\t- execute bash in the app container"
-	@echo "🆘 \e[0;1mmake phpstan\e[0m \t- run static analysis on app/"
 	@echo "🆘 \e[0;1mmake refresh\e[0m \t- restart app container"
+	@echo "🆘 \e[0;1mmake stan\e[0m \t\t- run static analysis on app/"
 	@echo "🆘 \e[0;1mmake test\e[0m \t\t- run tests in app/"
 
 applog:
@@ -110,10 +110,10 @@ purge:
 	@echo "🔨 \e[1;32m Purging installation\e[0m"
 	@bash ./bin/purge.sh
 
-csfixer:
+csf:
 	./bin/php-cs-fixer/vendor/bin/php-cs-fixer fix app
 
-phpstan:
+stan:
 	docker run -v ${PWD}:/app --rm ghcr.io/phpstan/phpstan analyze app
 
 test:
