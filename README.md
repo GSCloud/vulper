@@ -9,7 +9,6 @@ Deploy basic containers **app**, **db**, **cache** *(Redis)* and **phpmyadmin** 
 ## Prerequisites
  - Docker environment [https://docs.docker.com/get-docker/]
  - `sudo apt install make` - utility to process Makefile
- - `sudo apt install ruby-full` - Ruby is used for YAML 2 JSON conversions
 
 ## Makefile
 Run `make` for help. [https://www.gnu.org/software/make/manual/make.html]
@@ -86,9 +85,8 @@ Configuration is stored as **.env** file. Demo configurations are available as *
 
 ## Configuration Commands
  - `make cfg` - show docker-compose configuration
- - `make jsoncfg` - show docker-compose configuration as JSON
- - `make jsonapp` - show environment as JSON
- - `make savejson` - save application config to app/env.json as JSON
+ - `make json` - show environment as JSON
+ - `make savejson` - save environment as JSON to app/env.json
 
 ## Router
 

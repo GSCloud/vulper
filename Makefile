@@ -14,8 +14,7 @@ endif
 	@echo ""
 	@echo "\e[92mConfiguration / Documentation\e[0m"
 	@echo "🆘 \e[0;1mmake cfg\e[0m \t\t- show Docker config"
-	@echo "🆘 \e[0;1mmake jsoncfg\e[0m \t- show Docker config (JSON)"
-	@echo "🆘 \e[0;1mmake jsonapp\e[0m \t- show application config (JSON)"
+	@echo "🆘 \e[0;1mmake json\e[0m \t\t- show application config (JSON)"
 	@echo "🆘 \e[0;1mmake savejson\e[0m \t- save application config to app/env.json (JSON)"
 	@echo "🆘 \e[0;1mmake docs\e[0m \t\t- build documentation"
 	@echo ""
@@ -86,14 +85,11 @@ cfg:
 	@echo "🔨 \e[1;32m Configuration\e[0m"
 	@docker-compose config
 
-jsoncfg:
-	@bash ./bin/configjson.sh
-
-jsonapp:
-	@bash ./bin/exportconfig.sh
+json:
+	@php bin/envparser.php .env
 
 savejson:
-	bash ./bin/exportconfig.sh > ./app/env.json
+	php bin/envparser.php .env > ./app/env.json
 
 check:
 	@echo "🔨 \e[1;32m Checking configuration\e[0m"
