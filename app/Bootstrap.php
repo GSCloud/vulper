@@ -2,8 +2,8 @@
 /**
  * Vulper Bootstrap
  *
- * @author   Fred Brooker <git@gscloud.cz>
- * @license  MIT https://gscloud.cz/LICENSE
+ * @author  Fred Brooker <git@gscloud.cz>
+ * @license MIT https://gscloud.cz/LICENSE
  */
 
 use Nette\Neon\Neon;
@@ -13,7 +13,7 @@ use Tracy\Debugger;
 if ('cli' === PHP_SAPI) {
     $req = getenv('CLI_REQ');
     if ($req && file_exists($req) && is_readable($req)) {
-        require_once $req;
+        include_once $req;
     }
 }
 
@@ -34,22 +34,30 @@ error_reporting(E_ALL);
 date_default_timezone_set((string) ($cfg['date_default_timezone'] ?? 'Europe/Prague'));
 
 // although not exhaustive, the possible PHP_SAPI values include: apache, apache2handler, cgi, cgi-fcgi, cli, cli-server, embed, fpm-fcgi, litespeed, phpdbg
-/** @const TRUE if command line interface */
+/**
+ * @const TRUE if command line interface 
+*/
 defined('CLI') || define('CLI', (bool) ('cli' === PHP_SAPI));
 
-/** @const TRUE if running server locally */
+/**
+ * @const TRUE if running server locally 
+*/
 defined('LOCALHOST') || define('LOCALHOST', (bool) ('localhost' == ($_SERVER['SERVER_NAME'] ?? '')) || CLI);
 
-/** @const ROOT folder path */
+/**
+ * @const ROOT folder path 
+*/
 defined('ROOT') || define('ROOT', __DIR__);
 
-/** @const APP folder path */
+/**
+ * @const APP folder path 
+*/
 defined('APP') || define('APP', ROOT . DS . 'app');
 
 // load COMPOSER
 $autoload_file = ROOT . DS . 'vendor' . DS . 'autoload.php';
 if (file_exists($autoload_file) && is_readable($autoload_file)) {
-    require_once $autoload_file;
+    include_once $autoload_file;
 } else {
     die("Missing Composer autoloader!\n");
 }
@@ -104,7 +112,9 @@ if (true === CLI) {
     defined('DEBUG') || define('DEBUG', false);
 }
 
-/** @const Tracy debugger on/off */
+/**
+ * @const Tracy debugger on/off 
+*/
 defined('DEBUG') || define('DEBUG', (bool) ($cfg['debug'] ?? false));
 if (true === DEBUG) {
     // get correct remote IP address
@@ -126,14 +136,14 @@ if (true === DEBUG) {
     } else {
         $mode = (string) ($cfg['debug_mode'] ?? '');
         switch ($mode) {
-            case "dev":
-                Debugger::enable(Debugger::DEVELOPMENT, $logs);
-                break;
-            case "prod":
-                Debugger::enable(Debugger::PRODUCTION, $logs);
-                break;
-            default:
-                Debugger::enable(Debugger::DETECT, $logs);
+        case "dev":
+            Debugger::enable(Debugger::DEVELOPMENT, $logs);
+            break;
+        case "prod":
+            Debugger::enable(Debugger::PRODUCTION, $logs);
+            break;
+        default:
+            Debugger::enable(Debugger::DETECT, $logs);
         }
     }
 }

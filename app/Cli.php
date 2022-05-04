@@ -8,7 +8,7 @@ use Tracy\Debugger;
 class Cli
 {
     /**
-     * @param array<mixed> $cfg
+     * @param array<mixed>  $cfg
      * @param array<string> $argv
      */
     public function __construct(
@@ -56,7 +56,9 @@ class Cli
                             $controller = '\App\Cli\\' . $class;
                             if (class_exists($controller)) {
                                 if (method_exists($controller, 'getInfoText')) {
-                                    /** @phpstan-ignore-next-line */
+                                    /**
+ * @phpstan-ignore-next-line 
+*/
                                     $climate->out("<bold>$param</bold>\t- " . (new $controller($this->cfg))->getInfoText());
                                 }
                             }
@@ -70,7 +72,9 @@ class Cli
         if (count($this->argv) > 1) {
             $controller = '\App\Cli\\' . ucfirst(strtolower($this->argv[1])) . 'Controller';
             if (class_exists($controller)) {
-                /** @phpstan-ignore-next-line */
+                /**
+ * @phpstan-ignore-next-line 
+*/
                 (new $controller($this->cfg))->run();
             }
         }

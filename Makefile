@@ -3,7 +3,11 @@ include .env
 is_app_dock != docker ps | grep ${APP_NAME} # check if app container is running
 is_composer != command -v composer 2> /dev/null # check if composer is installed
 all: info
-
+guard-%:
+	@ if [ "${${*}}" = "" ]; then \
+		echo "\e[1;32m❗Environment var $* not set\e[0;0m"; \
+		exit 1; \
+	fi
 info:
 	@echo "\e[1;34m👾 Welcome to ${PROJECT_NAME}"
 ifeq ($(strip $(PMA_DISABLE)),1)
@@ -29,7 +33,8 @@ endif
 	@echo ""
 	@echo "\e[92mDeveloper Tools\e[0m"
 	@echo "🆘 \e[0;1mmake applog\e[0m \t\t- show app container logs"
-	@echo "🆘 \e[0;1mmake csf\e[0m \t\t- run CS-FIXER on app/"
+	@echo "🆘 \e[0;1mmake cs\e[0m \t\t- run phpcs on app/"
+	@echo "🆘 \e[0;1mmake cbf\e[0m \t\t- run phpcbf on app/"
 	@echo "🆘 \e[0;1mmake exec\e[0m \t\t- execute bash in the app container"
 	@echo "🆘 \e[0;1mmake refresh\e[0m \t- restart app container"
 	@echo "🆘 \e[0;1mmake stan\e[0m \t\t- run static analysis on app/"
@@ -37,7 +42,6 @@ endif
 
 applog:
 	@docker logs -f --details ${APP_NAME}
-
 refresh:
 ifneq ($(strip $(is_app_dock)),)
 	@echo "Application container details: \e[0;1m${is_app_dock}\e[0m"
@@ -45,18 +49,15 @@ ifneq ($(strip $(is_app_dock)),)
 else
 	@echo "Container is not running."
 endif
-
 update:
 ifneq ($(strip $(is_composer)),)
 	@composer update
 else
 	@echo "Composer is not installed."
 endif
-
 docs:
 	@echo "🔨 \e[1;32m Building documentation\e[0m"
 	@bash ./bin/create_pdf.sh
-
 install:
 ifneq ($(strip $(is_composer)),)
 	@echo "🔨 \e[1;32m Installing containers\e[0m"
@@ -64,54 +65,43 @@ ifneq ($(strip $(is_composer)),)
 else
 	@echo "Composer is not installed."
 endif
-
 extensions:
 	@echo "🔨 \e[1;32m Installing PHP extensions\e[0m"
 	@bash ./bin/extensions.sh
-
 stop:
 	@echo "🔨 \e[1;32m Stopping containers\e[0m"
 	@bash ./bin/stop.sh
-
 start:
 	@echo "🔨 \e[1;32m Resuming containers\e[0m"
 	@bash ./bin/start.sh
-
 remove:
 	@echo "🔨 \e[1;32m Removing containers\e[0m"
 	@bash ./bin/remove.sh
-
 cfg:
 	@echo "🔨 \e[1;32m Configuration\e[0m"
 	@docker-compose config
-
 json:
 	@php bin/envparser.php .env
-
 savejson:
 	php bin/envparser.php .env > ./app/env.json
-
 check:
 	@echo "🔨 \e[1;32m Checking configuration\e[0m"
 	@bash ./bin/check.sh
-
 exec:
 ifneq ($(strip $(is_app_dock)),)
 	@bash ./bin/execbash.sh
 else
 	@echo "Container is not running."
 endif
-
 purge:
 	@echo "🔨 \e[1;32m Purging installation\e[0m"
 	@bash ./bin/purge.sh
-
-csf:
-	./bin/php-cs-fixer/vendor/bin/php-cs-fixer fix app
-
+cbf:
+	command -v phpcbf && phpcbf app
+cs:
+	command -v phpcs && phpcs app
 stan:
 	docker run -v ${PWD}:/app --rm ghcr.io/phpstan/phpstan analyze app
-
 test:
 	./vendor/bin/tester .
 
